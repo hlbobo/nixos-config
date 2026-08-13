@@ -43,7 +43,21 @@
   networking.networkmanager.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];  
- 
+
+  # script for github update
+  programs.bash.interactiveShellInit = ''
+  nixsync() {
+      if [ -z "$1" ]; then
+        echo "Usage: nixsync \"commit message\""
+        return 1
+      fi
+      cd /etc/nixos || return 1
+      git add -A
+      git commit -m "$1"
+      git push
+    }
+  ''; 
+
   # For flatpak
   systemd.tmpfiles.rules = [
     "L+ /usr/bin/flatpak - - - - ${pkgs.flatpak}/bin/flatpak"
