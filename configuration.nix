@@ -140,6 +140,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";
     users."bobo" = { pkgs, ... }: {
       imports = [
         dms.homeModules.dank-material-shell
@@ -147,6 +148,17 @@
 
       programs.dank-material-shell = {
         enable = true;
+      };
+      
+      programs.bash = {
+        enable = true;
+        shellAliases = {
+          rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#bobo";
+          nixconfig = "sudo nano /etc/nixos/configuration.nix";
+          nixflake = "sudo nano /etc/nixos/flake.nix";
+          niriconfig = "sudo nano ~/.config/niri/config.kdl";
+          niribinds = "sudo nano ~/.config/niri/dms/binds.kdl";
+        };
       };
 
       home.stateVersion = "26.05";
