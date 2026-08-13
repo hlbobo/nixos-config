@@ -128,6 +128,8 @@
     ];
   };
 
+  services.lact.enable = true;
+
 
   ########################
   ##  NIRI + DMS SETUP  ##
