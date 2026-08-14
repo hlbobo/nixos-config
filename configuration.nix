@@ -22,6 +22,7 @@
    
     theme = ./grub-theme;
     gfxmodeEfi = "1920x1080";
+    gfxpayloadEfi = "keep";
   };
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -30,7 +31,8 @@
   nixpkgs.hostPlatform = "x86_64-linux";
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest; # vanilla kernel
+  boot.kernelPackages = pkgs.linuxPackages_xanmod_latest; # Xanmod patch kernel
 
   networking.hostName = "bobo"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -165,12 +167,12 @@
     };
   };
 
-  services.displayManager.dms-greeter = {
-    enable = true;
-    compositor.name = "niri";
-    configHome = "/home/bobo";
-    package = dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  };
+  #services.displayManager.dms-greeter = {
+   # enable = true;
+   # compositor.name = "niri";
+   # configHome = "/home/bobo";
+   # package = dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  #};
 
   # Set your time zone.
   time.timeZone = "Europe/Bucharest";
@@ -195,7 +197,10 @@
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = false;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
@@ -237,6 +242,8 @@
     ];
   };
 
+  services.hardware.openrgb.enable = true;
+
  ################
  ##  PROGRAMS  ##
  ################
@@ -256,6 +263,9 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  
+  # install KDE Connect
+  programs.kdeconnect.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -265,6 +275,8 @@
      pciutils
      fastfetch
      mangohud
+     winetricks
+     wine-staging
      protonplus
      lutris
      heroic
@@ -274,6 +286,7 @@
      bottles
      (discord.override { withVencord = true; })
      gimp
+     openrgb
      libreoffice
      kdePackages.kdenlive
      qbittorrent
@@ -286,7 +299,24 @@
      fuzzel
      nvtopPackages.full
      lact
+
+     # media codecs
+     gst_all_1.gstreamer
+     gst_all_1.gst-plugins-base
+     gst_all_1.gst-plugins-good
+     gst_all_1.gst-plugins-bad
+     gst_all_1.gst-plugins-ugly
+     gst_all_1.gst-libav        # ffmpeg-backed codecs (h264, aac, etc.)
+
+     ffmpeg-full                # full ffmpeg with all codecs enabled
+
+     libdvdcss                  # DVD decryption, like Nobara includes
+     libdvdread
+     libdvdnav
+     nvidia-vaapi-driver
   ];
+
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
 
   services = {
     asusd = {
