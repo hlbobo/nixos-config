@@ -18,12 +18,17 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    millennium = {
+      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, dms, home-manager }: {
+  outputs = { self, nixpkgs, nixos-hardware, dms, home-manager, millennium,... }@inputs: {
     # replace <your-hostname> with your actual hostname
     nixosConfigurations.bobo = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit dms; };
+      specialArgs = { inherit dms inputs; };
       modules = [
 	dms.nixosModules.dank-material-shell
         home-manager.nixosModules.home-manager

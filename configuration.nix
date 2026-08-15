@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, dms, ... }:
+{ config, pkgs, inputs, lib, dms, ... }:
 
 {
   imports =
@@ -74,6 +74,7 @@
   # Enable OpenGL
   hardware.graphics = {
      enable = true;
+     enable32Bit = true;
   };
 
   # Enable NVIDIA Drivers and Optimus-Prime
@@ -254,12 +255,16 @@
   ];
   
   # Install Steam
-  programs.steam.enable = true;
+  nixpkgs.overlays = [ inputs.millennium.overlays.default ];
+  programs.steam = {
+    enable = true;
+    package = pkgs.millennium-steam;
+  };
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
   
   # Install firefox.
-  programs.firefox.enable = true;
+  # programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -299,7 +304,10 @@
      fuzzel
      nvtopPackages.full
      lact
-
+     xwayland-satellite
+     yad
+     jq
+     
      # media codecs
      gst_all_1.gstreamer
      gst_all_1.gst-plugins-base
