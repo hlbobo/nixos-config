@@ -83,6 +83,7 @@
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
+    nvidiaPersistenced = true;    
 
     prime = {
       offload = {
@@ -289,7 +290,6 @@
      vlc
      prismlauncher
      bottles
-     (discord.override { withVencord = true; })
      gimp
      openrgb
      libreoffice
