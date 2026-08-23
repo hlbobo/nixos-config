@@ -135,9 +135,9 @@
   services.lact.enable = true;
 
 
-  ########################
-  ##  NIRI + DMS SETUP  ##
-  ########################
+ ########################
+ ##  NIRI + DMS SETUP  ##
+ ########################
 
   programs.niri.enable = true;
   services.displayManager.defaultSession = lib.mkForce "niri";
@@ -193,6 +193,10 @@
     LC_TELEPHONE = "ro_RO.UTF-8";
     LC_TIME = "ro_RO.UTF-8";
   };
+
+ ################
+ ##  Services  ##
+ ################
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
@@ -250,6 +254,12 @@
  ##  PROGRAMS  ##
  ################
 
+  # Waydroid
+  virtualisation.waydroid = {
+    enable = true;
+    package = pkgs.waydroid-nftables;
+  };
+
   # emoji fonts
   fonts.packages = with pkgs; [
     noto-fonts-color-emoji
@@ -284,6 +294,7 @@
      winetricks
      wine-staging
      protonplus
+     protontricks
      lutris
      heroic
      obs-studio
@@ -307,6 +318,8 @@
      xwayland-satellite
      yad
      jq
+     wl-clipboard
+     waydroid-helper
      
      # media codecs
      gst_all_1.gstreamer
@@ -322,6 +335,8 @@
      libdvdread
      libdvdnav
      nvidia-vaapi-driver
+     pulseaudio
+     pavucontrol
   ];
 
   environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
