@@ -320,6 +320,7 @@
      jq
      wl-clipboard
      waydroid-helper
+     itch
      
      adw-gtk3
      kdePackages.qt6ct
