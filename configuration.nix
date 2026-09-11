@@ -305,10 +305,24 @@
      gimp
      openrgb
      libreoffice
+    
+     dsearch
+
+     #inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default 
+     (pkgs.symlinkJoin {
+       name = "zen-browser-wrapped";
+       paths = [ inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+       buildInputs = [ pkgs.makeWrapper ];
+       postBuild = ''
+         wrapProgram $out/bin/zen \
+         --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [ pkgs.libpulseaudio pkgs.alsa-lib pkgs.ffmpeg-full ]}"
+       '';
+     })    
+
      kdePackages.kdenlive
      qbittorrent
      tailscale
-     librewolf
+     # librewolf
      vscodium
      git
      gh
@@ -340,7 +354,7 @@
      libdvdread
      libdvdnav
      nvidia-vaapi-driver
-     pulseaudio
+     # pulseaudio
      pavucontrol
   ];
 

@@ -23,9 +23,14 @@
       url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, dms, home-manager, millennium,... }@inputs: {
+  outputs = { self, nixpkgs, nixos-hardware, dms, home-manager, millennium, zen-browser, ... }@inputs: {
     # replace <your-hostname> with your actual hostname
     nixosConfigurations.bobo = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit dms inputs; };
