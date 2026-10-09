@@ -82,7 +82,7 @@
     enable = true;
     powerOnBoot = true;  # optional, turns it on at boot
   };
-  services.blueman.enable = true;  # optional, gives you a tray applet/CLI fallback
+  # services.blueman.enable = true;  # optional, gives you a tray applet/CLI fallback
 
   # Enable NVIDIA Drivers and Optimus-Prime
   services.xserver.videoDrivers = ["nvidia"];
