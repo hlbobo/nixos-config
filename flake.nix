@@ -9,9 +9,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
+   # dms = {
+   #   url = "github:AvengeMedia/DankMaterialShell/stable";
+   #   inputs.nixpkgs.follows = "nixpkgs";
+   # };
+    
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/cachix";
     };
 
     home-manager = {
@@ -30,13 +34,14 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, dms, home-manager, millennium, zen-browser, ... }@inputs: {
+  outputs = { self, nixpkgs, nixos-hardware, noctalia, home-manager, millennium, zen-browser, ... }@inputs: {
     # replace <your-hostname> with your actual hostname
     nixosConfigurations.bobo = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit dms inputs; };
+      specialArgs = { inherit inputs; };
       modules = [
-	dms.nixosModules.dank-material-shell
-        home-manager.nixosModules.home-manager
+	# dms.nixosModules.dank-material-shell
+        noctalia.nixosModules.default
+	home-manager.nixosModules.home-manager
         nixos-hardware.nixosModules.asus-fx506hm
         ./hardware-configuration.nix
 	./configuration.nix

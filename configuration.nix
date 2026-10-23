@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, lib, dms, ... }:
+{ config, pkgs, inputs, lib, noctalia, ... }:
 
 {
   imports =
@@ -143,9 +143,9 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
- ########################
- ##  NIRI + DMS SETUP  ##
- ########################
+ #############################
+ ##  NIRI + NOCTALIA SETUP  ##
+ #############################
 
   programs.niri.enable = true;
   services.displayManager.defaultSession = lib.mkForce "niri";
@@ -155,11 +155,33 @@
     backupFileExtension = "backup";
     users."bobo" = { pkgs, ... }: {
       imports = [
-        dms.homeModules.dank-material-shell
+        inputs.noctalia.homeModules.default
       ];
 
-      programs.dank-material-shell = {
+      programs.noctalia = {
         enable = true;
+
+        settings = { # This may also be a string or path to a .toml file.
+          theme = {
+            mode = "dark";
+            source = "builtin";
+            builtin = "Catppuccin";
+          };
+
+          wallpaper = {
+            enabled = true;
+            default.path = "/path/to/wallpapers/wallpaper.png";
+          };
+
+	  layout = {
+	    gap = 2;
+	  };
+
+          appearance = {
+            border_width = 1;       # Set to 1 or 0 for smaller/no inner borders
+            outer_border_width = 1; # Set to 0 to disable outer border rings
+         };
+        };
       };
       
       programs.bash = {
@@ -169,7 +191,7 @@
           nixconfig = "sudo nano /etc/nixos/configuration.nix";
           nixflake = "sudo nano /etc/nixos/flake.nix";
           niriconfig = "sudo nano ~/.config/niri/config.kdl";
-          niribinds = "sudo nano ~/.config/niri/dms/binds.kdl";
+          # niribinds = "sudo nano ~/.config/niri/dms/binds.kdl";
         };
       };
 
@@ -177,12 +199,16 @@
     };
   };
 
-  #services.displayManager.dms-greeter = {
-   # enable = true;
-   # compositor.name = "niri";
-   # configHome = "/home/bobo";
-   # package = dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  #};
+  programs.noctalia = {
+    enable = true;
+    systemd.enable = true;
+    # Enables NetworkManager, Bluetooth, UPower, and a power profile service.
+    recommendedServices.enable = true;
+  };
+  nix.settings = {
+    extra-substituters = [ "https://noctalia.cachix.org" ];
+    extra-trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Bucharest";
@@ -272,6 +298,8 @@
   fonts.packages = with pkgs; [
     noto-fonts-color-emoji
   ];
+
+  programs.nix-ld.enable = true;
   
   # Install Steam
   nixpkgs.overlays = [ inputs.millennium.overlays.default ];
@@ -343,6 +371,7 @@
      wl-clipboard
      waydroid-helper
      itch
+     jetbrains.idea
      
      adw-gtk3
      kdePackages.qt6ct
