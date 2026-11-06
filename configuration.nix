@@ -225,7 +225,7 @@
     LC_NUMERIC = "ro_RO.UTF-8";
     LC_PAPER = "ro_RO.UTF-8";
     LC_TELEPHONE = "ro_RO.UTF-8";
-    LC_TIME = "ro_RO.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
   };
 
  ################
@@ -392,6 +392,8 @@
      nvidia-vaapi-driver
      # pulseaudio
      pavucontrol
+     python314
+     python314Packages.pip
   ];
 
   environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
