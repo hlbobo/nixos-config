@@ -372,6 +372,8 @@
      waydroid-helper
      itch
      jetbrains.idea
+     jetbrains.clion
+     valgrind
      
      adw-gtk3
      kdePackages.qt6ct
@@ -394,6 +396,7 @@
      pavucontrol
      python314
      python314Packages.pip
+     gcc
   ];
 
   environment.sessionVariables.LIBVA_DRIVER_NAME = "nvidia";
