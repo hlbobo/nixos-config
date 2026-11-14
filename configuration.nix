@@ -340,6 +340,7 @@
      gimp
      openrgb
      libreoffice
+     obsidian
     
      dsearch
 
